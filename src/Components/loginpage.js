@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './loginPage.css'; // Import external CSS file
 
 const LoginPage = () => {
@@ -27,8 +27,14 @@ const LoginPage = () => {
       
       const data = await response.json();
       const { token } = data;
-      console.log('Token:', token);
-      navigate('/product-details'); 
+      
+      // Store the token in a cookie
+      document.cookie = `token=${token}; path=/`; // Set the token in a cookie with path '/'
+
+      // Store the username in a cookie
+      document.cookie = `username_Product=${username}; path=/`; // Set the username in a cookie with path '/'
+
+      navigate('/product-details'); // Redirect to the profile page
     } catch (error) {
       setError(error.message);
       console.error('Error:', error);
@@ -62,6 +68,7 @@ const LoginPage = () => {
         <button type="submit" className="button">Login</button>
         {error && <div className="error">{error}</div>}
       </form>
+      <p className="register-text">If you are a new user, <Link to="/register">register here</Link>.</p>
     </div>
   );
 };

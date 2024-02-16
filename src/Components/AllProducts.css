@@ -100,4 +100,33 @@
   .product-box:hover img {
     transform: scale(1.4); /* Example: Increase the image size on hover */
   }
+  .welcome-message {
+    font-size: 50px;
+    font-weight: bold;
+    color: #007bff; /* Blue color */
+    margin-right: 20px; /* Add some right margin for spacing */
+  }
   
+  .profile-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* AllProducts.css */
+
+.login-prompt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Set height to full viewport height */
+}
+
+.login-prompt p {
+  font-size: 100px;
+  text-align: center;
+}

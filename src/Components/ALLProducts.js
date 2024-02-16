@@ -6,13 +6,31 @@ function ProductDetails() {
   const [productData, setProductData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortedBy, setSortedBy] = useState(null);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
+    // Retrieve the username from the cookie
+    const usernameCookie = getCookie('username_Product');
+    setUsername(usernameCookie);
+    
     fetch('https://dummyjson.com/products')
       .then(res => res.json())
       .then(data => setProductData(data.products))
       .catch(error => console.error('Error fetching data:', error));
   }, []);
+
+  // Function to retrieve a cookie by name
+  const getCookie = (name) => {
+    const cookieString = document.cookie;
+    const cookies = cookieString.split('; ');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName === name) {
+        return cookieValue;
+      }
+    }
+    return null;
+  };
 
   // Function to handle search input change
   const handleSearchChange = event => {
@@ -41,42 +59,55 @@ function ProductDetails() {
 
   return (
     <div className="product-container">
-      <div className="top-section">
-        <h1 className="product-heading">All Products</h1>
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Search by name or description"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="search-input"
-          />
+      {!username && (
+        <div className="login-prompt">
+          <p>You need to <Link to="/">log in</Link> to view this page.</p>
         </div>
-        <div className="sort-buttons">
-          <button onClick={sortByName} className="sort-button">Sort by Name</button>
-          <button onClick={sortByPrice} className="sort-button">Sort by Price</button>
-        </div>
-      </div>
-      {filteredProducts.length > 0 ? (
-        <div className="product-grid">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="product-box">
-              <img src={product.thumbnail} alt="Product Thumbnail" />
-              <div className="product-info">
-                <p className="product-title">{product.title}</p>
-                <p className="product-description">{product.description}</p>
-                <p className="product-price">Price: ${product.price}</p>
-                <p className="product-rating">Rating: {product.rating}</p>
-                {/* Add more product details here */}
-                <Link to={`/product/${product.id}`} className="view-details-link"><button className="view-details-button">View Details</button></Link> {/* Button to view details of the product */}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>No products found.</p>
       )}
-      {sortedBy && <p className="sorting-info">Sorted by: {sortedBy}</p>} {/* Display the current sorting criteria */}
+      {username && (
+        <div>
+          <div className="welcome-message">
+            Welcome, {username}!
+          </div>
+          <div className="top-section">
+            <h1 className="product-heading">All Products</h1>
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search by name or description"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="search-input"
+              />
+            </div>
+            <div className="sort-buttons">
+              <button onClick={sortByName} className="sort-button">Sort by Name</button>
+              <button onClick={sortByPrice} className="sort-button">Sort by Price</button>
+            </div>
+            <div className="profile-container">
+              <Link to="/profile" className="profile-button">Profile</Link> {/* Profile button */}
+            </div>
+          </div>
+          {filteredProducts.length > 0 && (
+            <div className="product-grid">
+              {filteredProducts.map(product => (
+                <div key={product.id} className="product-box">
+                  <img src={product.thumbnail} alt="Product Thumbnail" />
+                  <div className="product-info">
+                    <p className="product-title">{product.title}</p>
+                    <p className="product-description">{product.description}</p>
+                    <p className="product-price">Price: ${product.price}</p>
+                    <p className="product-rating">Rating: {product.rating}</p>
+                    {/* Add more product details here */}
+                    <Link to={`/product/${product.id}`} className="view-details-link"><button className="view-details-button">View Details</button></Link> {/* Button to view details of the product */}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {sortedBy && <p className="sorting-info">Sorted by: {sortedBy}</p>} {/* Display the current sorting criteria */}
+        </div>
+      )}
     </div>
   );
 }
