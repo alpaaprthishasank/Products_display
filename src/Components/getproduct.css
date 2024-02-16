@@ -1,0 +1,75 @@
+
+
+.product-container1 {
+  max-width: 1000px; /* Increase the max-width to 1000px */
+  margin: 0 auto;
+  padding: 20px;
+}
+.product-box1 {
+  display: flex;
+  align-items: flex-start; /* Align items at the start of the flex container */
+  border: 1px solid #ccc; /* Add border for box-like structure */
+  padding: 20px; /* Add padding for spacing */
+}
+
+.product-box1 img {
+  max-width: 300px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.product-info1 {
+  flex: 1;
+}
+
+.product-title1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.product-description1 {
+  margin-bottom: 10px;
+}
+
+.product-price1 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.product-rating1 {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.product-images1 {
+  margin-top: 20px;
+}
+
+.small-image {
+  max-width: 100px;
+  height: auto;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out; /* Add transition for smooth hover effect */
+}
+
+.small-image:hover {
+  transform: scale(1.5); /* Increase size on hover */
+}
+
+.product-images1 img:last-child {
+  margin-right: 0;
+}
+
+.product-main-image {
+  max-width: 300px;
+  height: auto;
+  margin-right: 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out; /* Add transition for smooth hover effect */
+}
+
+.product-main-image:hover {
+  transform: scale(1.5); /* Increase size on hover */
+}
