@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './getproduct.css';
 
-function Product_Detail() {
+function ProductDetail() {
   const { productId } = useParams();
   const [productData, setProductData] = useState(null);
   const [hoveredImage, setHoveredImage] = useState(null);
@@ -54,4 +54,4 @@ function Product_Detail() {
   );
 }
 
-export default Product_Detail;
+export default ProductDetail;
