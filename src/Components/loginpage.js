@@ -68,7 +68,7 @@ const LoginPage = () => {
         <button type="submit" className="button">Login</button>
         {error && <div className="error">{error}</div>}
       </form>
-      <p className="register-text">If you are a new user, <Link to="/register">register here</Link>.</p>
+      <p className="register-text">If you are a new user? <Link to="/register">register here</Link>.</p>
     </div>
   );
 };
