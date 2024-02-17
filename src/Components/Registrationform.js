@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './RegistrationForm.css';
 
 function RegistrationForm() {
@@ -7,11 +7,10 @@ function RegistrationForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
   const [email, setEmail] = useState('');
-  const [photoLink, setPhotoLink] = useState(''); // Store the photo link as text
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [gender, setGender] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,11 +24,9 @@ function RegistrationForm() {
           firstName,
           lastName,
           age,
+          email,
+          password,
           gender,
-          email, // Include email
-          photo: photoLink, // Send photo link instead of file object
-          password, // Include password
-          // Add other user data fields here
         })
       });
 
@@ -37,14 +34,21 @@ function RegistrationForm() {
         throw new Error('Registration failed');
       }
 
-      const data = await response.json();
-      console.log('Registration successful:', data);
-      // Navigate to login page after successful registration
-      navigate('/'); // Redirect to the login page
+      const { token } = await response.json();
+
+      // Store user information in cookies
+      document.cookie = `username_Product=${username}; path=/`;
+      document.cookie = `firstName=${firstName}; path=/`;
+      document.cookie = `lastName=${lastName}; path=/`;
+      document.cookie = `age=${age}; path=/`;
+      document.cookie = `email=${email}; path=/`;
+      document.cookie = `gender=${gender}; path=/`;
+
+      console.log('Registration successful');
+      navigate('/product-details');
 
     } catch (error) {
       console.error('Registration error:', error.message);
-      // Handle error, e.g., display error message to the user
     }
   };
 
@@ -69,6 +73,10 @@ function RegistrationForm() {
           <input type="number" value={age} onChange={(e) => setAge(e.target.value)} required />
         </div>
         <div>
+          <label>Email:</label>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div>
           <label>Gender:</label>
           <select value={gender} onChange={(e) => setGender(e.target.value)} required>
             <option value="">Select Gender</option>
@@ -78,18 +86,9 @@ function RegistrationForm() {
           </select>
         </div>
         <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div>
-          <label>Photo Link:</label>
-          <input type="text" value={photoLink} onChange={(e) => setPhotoLink(e.target.value)} required />
-        </div>
-        <div>
           <label>Password:</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-        {/* Add other input fields for user data if needed */}
         <button type="submit">Register</button>
       </form>
     </div>

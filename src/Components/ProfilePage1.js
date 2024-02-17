@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './ProfileComponent.css'; // Import external CSS file
 
 const ProfileComponent = () => {
@@ -7,8 +7,8 @@ const ProfileComponent = () => {
   const [userDetails, setUserDetails] = useState(null);
 
   useEffect(() => {
-    // Function to extract JWT token from the cookie
-    const getTokenFromCookie = (name) => {
+    // Function to extract user information from cookies
+    const getUserInfoFromCookies = (name) => {
       const cookieString = document.cookie;
       const cookies = cookieString.split('; ');
       for (let cookie of cookies) {
@@ -20,12 +20,37 @@ const ProfileComponent = () => {
       return null;
     };
 
-    // Fetch user details using the JWT token
+    // Fetch user details using the token or cookies
     const fetchUserDetails = async () => {
       try {
-        const token = getTokenFromCookie('token');
+        let token = getUserInfoFromCookies('token');
         if (!token) {
-          throw new Error('Token not found');
+          token = ''; // Set empty token if not found
+        }
+
+        // Check if token is empty and fetch user details using cookies
+        if (!token) {
+          const username = getUserInfoFromCookies('username_Product');
+          const firstName = getUserInfoFromCookies('firstName');
+          const lastName = getUserInfoFromCookies('lastName');
+          const age = getUserInfoFromCookies('age');
+          const email = getUserInfoFromCookies('email');
+          const gender=getUserInfoFromCookies('gender')
+          if (!username || !firstName || !lastName || !age || !email||!gender) {
+            throw new Error('User information not found in cookies');
+          }
+
+          // Set userDetails object using user information from cookies
+          setUserDetails({
+            username,
+            firstName,
+            lastName,
+            age,
+            email,
+            gender,
+            // Add more user details as needed
+          });
+          return; // Exit the function if user details are set from cookies
         }
 
         const response = await fetch('https://dummyjson.com/auth/me', {
@@ -53,9 +78,13 @@ const ProfileComponent = () => {
     // Clear the token cookie
     document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
-    // Clear the username_Product cookie
+    // Clear other user information cookies if needed
     document.cookie = 'username_Product=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-
+    document.cookie = 'firstName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'lastName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'age=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie='gender=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     // Redirect to the specified path after logout
     navigate('/');
   };
